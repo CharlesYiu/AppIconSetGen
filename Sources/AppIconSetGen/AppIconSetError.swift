@@ -10,8 +10,6 @@ import Foundation
 public enum AppIconSetError: Error {
     case failedToWriteFile
     case failedToMakeDir
-    case unknown
-    case test
 }
 extension AppIconSetError: LocalizedError {
     public var errorDescription: String? {
@@ -20,10 +18,5 @@ extension AppIconSetError: LocalizedError {
             return "Failed to save image"
         case .failedToMakeDir:
             return "Failed to make directory"
-        case .unknown:
-            return "Unknown error"
-        case .test:
-            return "Test error"
-        }
     }
 }
