@@ -50,18 +50,24 @@ extension Role: ContentsJSONStringConvertible {
 public enum Subtype: String {
     case any
     case mm38
-    case mm42
     case mm40
+    case mm41
+    case mm42
     case mm44
+    case mm45
+    case mm49
 }
 
 extension Subtype: ContentsJSONStringConvertible {
     public var contentJSONFormat: String {
         switch self {
         case .mm38: return "38mm"
-        case .mm42: return "42mm"
         case .mm40: return "40mm"
+        case .mm41: return "41mm"
+        case .mm42: return "42mm"
         case .mm44: return "44mm"
+        case .mm45: return "45mm"
+        case .mm49: return "49mm"
         default: return rawValue
         }
     }
@@ -118,14 +124,20 @@ public let iconInfoItemsIOS = [
 public let iconInfoItemsWatchOS = [
     IconInfo(idiom: .watch, size: 24, role: .notificationCenter, subtype: .mm38, scale: 2),
     IconInfo(idiom: .watch, size: 27.5, role: .notificationCenter, subtype: .mm42, scale: 2),
+    IconInfo(idiom: .watch, size: 33, role: .notificationCenter, subtype: .mm45, scale: 2),
     IconInfo(idiom: .watch, size: 29, role: .companionSettings, subtype: .any, scale: 2),
     IconInfo(idiom: .watch, size: 29, role: .companionSettings, subtype: .any, scale: 3),
     IconInfo(idiom: .watch, size: 40, role: .appLauncher, subtype: .mm38, scale: 2),
     IconInfo(idiom: .watch, size: 44, role: .appLauncher, subtype: .mm40, scale: 2),
+    IconInfo(idiom: .watch, size: 46, role: .appLauncher, subtype: .mm41, scale: 2),
     IconInfo(idiom: .watch, size: 50, role: .appLauncher, subtype: .mm44, scale: 2),
+    IconInfo(idiom: .watch, size: 51, role: .appLauncher, subtype: .mm45, scale: 2),
+    IconInfo(idiom: .watch, size: 54, role: .appLauncher, subtype: .mm49, scale: 2),
     IconInfo(idiom: .watch, size: 86, role: .quickLook, subtype: .mm38, scale: 2),
     IconInfo(idiom: .watch, size: 98, role: .quickLook, subtype: .mm42, scale: 2),
     IconInfo(idiom: .watch, size: 108, role: .quickLook, subtype: .mm44, scale: 2),
+    IconInfo(idiom: .watch, size: 117, role: .quickLook, subtype: .mm45, scale: 2),
+    IconInfo(idiom: .watch, size: 129, role: .quickLook, subtype: .mm49, scale: 2),
     IconInfo(idiom: .watchMarketing, size: 1024, scale: 1),
 ]
 
