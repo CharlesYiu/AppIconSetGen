@@ -24,12 +24,10 @@ struct AppIconSet {
         
         let folderPath = outputFolderPath.appendingPathComponent("\(appIconSetName).appiconset")
         
-        if (fileManager.fileExists(atPath: folderPath.absoluteString)) {
-            do {
-                try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: true)
-            } catch {
-                throw AppIconSetError.failedToMakeDir
-            }
+        do {
+            try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: true)
+        } catch {
+            throw AppIconSetError.failedToMakeDir
         }
         
 
