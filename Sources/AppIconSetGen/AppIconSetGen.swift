@@ -65,7 +65,7 @@ public enum AppIconSetType {
 }
 
 public func generateAppIconSet(image: NSImage, types: [AppIconSetType], name: String, output: URL) throws {
-    guard types.isEmpty else {
+    if (types.isEmpty)  {
         return
     }
     
