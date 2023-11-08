@@ -10,10 +10,10 @@ import Cocoa
 import Foundation
 import PathKit
 
-public struct AppIconSet {
+struct AppIconSet {
     let iconInfoItems: [IconInfo]
 
-    public func createOnDisk(sourceImage: NSImage, outputFolderPath: String, appIconSetName: String) throws {
+    func createOnDisk(sourceImage: NSImage, outputFolderPath: String, appIconSetName: String) throws {
         let items = iconInfoItems
         let imageSizesInPixels = items.reduce(into: Set<CGFloat>()) { (result: inout Set<CGFloat>, iconInfo) in
             result.insert(iconInfo.sizeInPixels)
@@ -24,7 +24,11 @@ public struct AppIconSet {
         print("Creating app icon set in \(folderPath)")
 
         try? folderPath.delete() // ignore errors
-        try folderPath.mkpath()
+        do {
+            try folderPath.mkpath()
+        } catch {
+            throw AppIconSetError.failedToMakeDir
+        }
 
         // create scaled icons
         try imageSizesInPixels.forEach { sizeInPixels in
@@ -32,7 +36,11 @@ public struct AppIconSet {
             print("Creating \(iconFileName)")
             if let imageData = sourceImage.imagePNGRepresentation(widthInPixels: sizeInPixels, heightInPixels: sizeInPixels) {
                 let outputFile = folderPath + Path(iconFileName)
-                try outputFile.write(imageData as Data)
+                do {
+                    try outputFile.write(imageData as Data)
+                } catch {
+                    throw AppIconSetError.failedToWriteFile
+                }
             }
         }
 
@@ -66,7 +74,11 @@ public struct AppIconSet {
         }.joined(separator: ",")
 
         let contents = "{\n\"images\":[\(entries)\n],\n\"info\":{\n\"version\":1,\n\"author\":\"xcode\"\n}\n}"
-        try contentsJSONFile.write(contents)
+        do {
+            try contentsJSONFile.write(contents)
+        } catch {
+            throw AppIconSetError.failedToWriteFile
+        }
     }
 
     public init(iconInfoItems: [IconInfo]) {
@@ -76,5 +88,4 @@ public struct AppIconSet {
     private func appIconFileName(from sizeInPixels: CGFloat) -> String {
         return "appicon_\(sizeInPixels.cleanValue).png"
     }
-
 }

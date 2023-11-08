@@ -1,23 +1,21 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 
 import PackageDescription
 
 let package = Package(
     name: "AppIconSetGen",
+    platforms: [
+        .macOS(.v10_14)
+    ],
     products: [
-        .executable(name: "AppIconSetGen", targets: ["AppIconSetGen"]),
-        .library(name: "AppIconSetGenCore", targets: ["AppIconSetGenCore"]),
+        .library(name: "AppIconSetGen", targets: ["AppIconSetGen"])
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/Commander.git", from: "0.8.0"),
-        .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.0"),
+        .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.0")
     ],
     targets: [
         .target(
             name: "AppIconSetGen",
-            dependencies: ["AppIconSetGenCore"]),
-        .target(
-            name: "AppIconSetGenCore",
-            dependencies: ["Commander", "PathKit"]),
+            dependencies: ["PathKit"])
     ]
 )
