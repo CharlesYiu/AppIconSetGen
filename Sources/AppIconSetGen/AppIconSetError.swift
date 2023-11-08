@@ -18,5 +18,6 @@ extension AppIconSetError: LocalizedError {
             return "Failed to save image"
         case .failedToMakeDir:
             return "Failed to make directory"
+        }
     }
 }
