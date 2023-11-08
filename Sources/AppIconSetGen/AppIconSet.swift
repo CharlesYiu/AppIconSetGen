@@ -22,13 +22,18 @@ struct AppIconSet {
         // create output folder
         let folderPath = Path(outputFolderPath) + Path("\(appIconSetName).appiconset")
         print("Creating app icon set in \(folderPath)")
-
-        try? folderPath.delete() // ignore errors
+        
+        do {
+            try folderPath.delete() // ignore errors
+        } catch {
+            print(error)
+        }
         do {
             try folderPath.mkpath()
         } catch {
             throw AppIconSetError.failedToMakeDir
         }
+        
 
         // create scaled icons
         try imageSizesInPixels.forEach { sizeInPixels in
