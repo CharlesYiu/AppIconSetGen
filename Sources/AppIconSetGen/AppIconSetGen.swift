@@ -87,7 +87,7 @@ public func generateAppIconSet(image: NSImage, types: [AppIconSetType], name: St
     
     print("Generating app icons...")
     let appIconSet = AppIconSet(iconInfoItems: iconInfoItems)
-    try appIconSet.createOnDisk(sourceImage: image, outputFolderPath: output.absoluteString, appIconSetName: name)
+    try appIconSet.createOnDisk(sourceImage: image, outputFolderPath: output, appIconSetName: name)
 
     print("Done!")
 }

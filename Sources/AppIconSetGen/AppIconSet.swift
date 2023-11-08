@@ -8,30 +8,28 @@
 
 import Cocoa
 import Foundation
-import PathKit
 
 struct AppIconSet {
     let iconInfoItems: [IconInfo]
+    let fileManager = FileManager()
 
-    func createOnDisk(sourceImage: NSImage, outputFolderPath: String, appIconSetName: String) throws {
+    func createOnDisk(sourceImage: NSImage, outputFolderPath: URL, appIconSetName: String) throws {
         let items = iconInfoItems
         let imageSizesInPixels = items.reduce(into: Set<CGFloat>()) { (result: inout Set<CGFloat>, iconInfo) in
             result.insert(iconInfo.sizeInPixels)
         }
 
         // create output folder
-        let folderPath = Path(outputFolderPath) + Path("\(appIconSetName).appiconset")
-        print("Creating app icon set in \(folderPath)")
+        print("Creating app icon set in \(outputFolderPath)")
         
-        do {
-            try folderPath.delete() // ignore errors
-        } catch {
-            print(error)
-        }
-        do {
-            try folderPath.mkpath()
-        } catch {
-            throw AppIconSetError.failedToMakeDir
+        let folderPath = outputFolderPath.appendingPathComponent("\(appIconSetName).appiconset")
+        
+        if (fileManager.fileExists(atPath: folderPath.absoluteString)) {
+            do {
+                try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: true)
+            } catch {
+                throw AppIconSetError.failedToMakeDir
+            }
         }
         
 
@@ -40,9 +38,10 @@ struct AppIconSet {
             let iconFileName = appIconFileName(from: sizeInPixels)
             print("Creating \(iconFileName)")
             if let imageData = sourceImage.imagePNGRepresentation(widthInPixels: sizeInPixels, heightInPixels: sizeInPixels) {
-                let outputFile = folderPath + Path(iconFileName)
+                
+                let outputFile = folderPath.appendingPathComponent(iconFileName)
                 do {
-                    try outputFile.write(imageData as Data)
+                    try imageData.write(to: outputFile)
                 } catch {
                     throw AppIconSetError.failedToWriteFile
                 }
@@ -50,7 +49,7 @@ struct AppIconSet {
         }
 
         // create Contents.json file
-        let contentsJSONFile = folderPath + Path("Contents.json")
+        let contentsJSONFile = folderPath.appendingPathComponent("Contents.json")
         print("Creating \(contentsJSONFile)")
 
         let entries = items.reduce(into: [String]()) { (result: inout [String], iconInfo) in
@@ -80,7 +79,7 @@ struct AppIconSet {
 
         let contents = "{\n\"images\":[\(entries)\n],\n\"info\":{\n\"version\":1,\n\"author\":\"xcode\"\n}\n}"
         do {
-            try contentsJSONFile.write(contents)
+            try contents.write(to: contentsJSONFile, atomically: true, encoding: .utf8)
         } catch {
             throw AppIconSetError.failedToWriteFile
         }
