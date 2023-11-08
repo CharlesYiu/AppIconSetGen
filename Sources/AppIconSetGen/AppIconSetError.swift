@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AppIconSetError: Error {
+public enum AppIconSetError: Error {
     case failedToWriteFile
     case failedToMakeDir
     case unknown
