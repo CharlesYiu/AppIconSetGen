@@ -22,7 +22,7 @@ struct AppIconSet {
         // create output folder
         print("Creating app icon set in \(outputFolderPath)")
         
-        let folderPath = outputFolderPath.appendingPathComponent("\(appIconSetName).appiconset")
+        let folderPath = outputFolderPath.appendingPathComponent(appIconSetName)
         
         do {
             try fileManager.createDirectory(at: folderPath, withIntermediateDirectories: true)
